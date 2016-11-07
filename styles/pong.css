@@ -1,0 +1,12 @@
+#myCanvas{
+    margin: auto;
+    display: block;
+    border: 5px dotted red;
+    padding: 10px;
+    background-color: black
+    
+}
+
+h1{
+    text-align: center;
+}
