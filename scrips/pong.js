@@ -1,29 +1,97 @@
-var canvas = document.getElementById('myCanvas');
-var context = canvas.getContext('2d');
+var WIDTH = 700, HEIGHT = 600, pi=Math.PI;
+var canvas, ctx, keystate;
+var player, ai, ball;
 
-context.beginPath();
-    var paddelLeft = context.rect(10, 10, 10, 100);
-    var paddelRight = context.rect(580, 10, 10, 100);
-    //context.rect(188, 50, 200, 100);
-    context.fillStyle = 'yellow';
-    context.fill();
-    context.stroke();
+player = {
+    x: null,
+    y: null,
+    width: 20,
+    height: 100, 
 
-context.beginPath(); //midline
-    context.moveTo(300, 600);
-    context.lineTo(300, 0);
-    context.lineWidth = 1;
-    context.strokeStyle = '#ff0000';
-    context.stroke();
+    update: function(){},
+    draw:  function(){
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+};
 
-context.beginPath();
-    context.arc(350, 150, 50, 0, 2* Math.PI);
-    context.strokeStyle = 'red';
-    context.fillStyle = 'red';
-    context.stroke();
-    context.fill();
-    context.closePath();
+ai = {
+    x: null,
+    y: null,
+    width: 20,
+    height: 100, 
+
+    update: function(){},
+    draw:  function(){
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+};
+
+ball = {
+    x: null,
+    y: null,
+    side: 20, 
+
+    update: function(){},
+    draw:  function(){
+        ctx.fillRect(this.x, this.y, this.side, this.side);
+    }
+};
 
 
 
 
+
+function main(){
+    canvas= document.createElement("canvas");
+    canvas.width = WIDTH;
+    canvas.height = Height;
+    ctx = canvas.getContext('2d');
+    document.body.appendChild(canvas);
+    
+    init();
+    
+    var loop = function(){
+        update();
+        draw();
+        window.requestAnimationFrame(loop, canvas);
+    };
+    window.requestAnimationFrame(loop, canvas);
+}
+
+function init(){
+    player.x = player.width;
+    player.y = (HEIGHT - player.height)/2;
+    
+    ai.x = WIDTH - (player.width+ ai.width);
+    ai.y = (HEIGHT- ai.height)/2;
+    
+    ball.x = (WIDTH - ball.side)/2;
+    ball.y = (HEIGHT - ball.side)/2;
+    
+}
+
+function update(){
+    ball.update();
+    player.update();
+    ai.update();
+}
+
+function draw(){
+    ball.draw();
+    player.draw();
+    ai.draw();
+}
+
+main();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
