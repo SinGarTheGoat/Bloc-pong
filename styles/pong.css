@@ -1,4 +1,5 @@
-#myCanvas{
+
+canvas{
     margin: auto;
     display: block;
     border: 5px dotted red;
@@ -6,6 +7,7 @@
     background-color: black
     
 }
+
 
 h1{
     text-align: center;
