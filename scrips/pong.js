@@ -106,6 +106,13 @@ window.onload = function(){
     window.addEventListener("keypress", onKeyPress);//keypress=event onKeyPress=function
 };
 
+//first we initilize values of paddels and balls with inIt 
+//then we call the animate function and pass in the step function as an argument
+// the animate function calls the step function 
+//the step function first calls the render function, 
+// the render function calls  player.paddle.move, ball.render, computer.render, player.render
+       //the  player.paddle.move
+
 //
 //context.beginPath();
 //    var paddelLeft = context.rect(10, 10, 10, 100);
