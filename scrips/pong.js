@@ -1,6 +1,8 @@
 var canvas = document.getElementById('myCanvas');
 var context = canvas.getContext('2d');
 
+
+
 var animate = window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame    ||
@@ -19,11 +21,11 @@ function Paddle(x, y, height, width){
     this.width = width;
     this.speed=10;
     
-    this.move = function(){
+    this.move = function(){  //tried passing in key code
         this.y+= this.speed;
-        console.log('wezzzzzz in move')
+       //console.log("y is " +this.y+ "this is speed"+ this.speed);
         if (this.y<0){
-            console.log('wezzzzzz in move "if"')
+         //   console.log('wezzzzzz in move "if"')
             this.y=0;
         }
         if(this.y>=canvas.height){
@@ -32,8 +34,9 @@ function Paddle(x, y, height, width){
     }
     
     this.render = function() {
+        console.log("y is " +this.y+ "this is speed"+ this.speed+ "this is x"+this.x);
        context.beginPath();
-        context.rect(x, y, 10, 100);
+        context.rect(this.x, this.y, 10, 100);
         context.fillStyle = 'yellow';
         context.fill();
         context.stroke();
@@ -61,6 +64,7 @@ function Ball(x,y){
     this.y = y;
         
     this.render = function() {
+    
         context.beginPath();
             context.arc(x, y, 50, 0, 2* Math.PI);
             context.strokeStyle = 'red';
@@ -77,9 +81,13 @@ var inIt = function(){
 }
 
 function render() {
+    //console.log("in render to start");
     player.paddle.move();
+     //console.log("player.paddle.move();");
     ball.render();
+     //console.log("ball.render();");
     computer.render();
+     //console.log("computer.render();");
     player.render();
     
 }
@@ -111,7 +119,8 @@ window.onload = function(){
 // the animate function calls the step function 
 //the step function first calls the render function, 
 // the render function calls  player.paddle.move, ball.render, computer.render, player.render
-       //the  player.paddle.move
+       //the  player.paddle.move looks at the y value and adds the value passed in by the speed varible, the speed varible is set by the onKeyPress function (wich we are not getting into)
+        //
 
 //
 //context.beginPath();
