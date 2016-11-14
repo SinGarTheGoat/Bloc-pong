@@ -19,17 +19,24 @@ function Paddle(x, y, height, width){
     this.y = y;
     this.height= height;
     this.width = width;
-    this.speed=10;
+    this.speed=1;
     
     this.move = function(){  //tried passing in key code
         this.y+= this.speed;
+        if(this.speed >=5){
+            this.speed =5;
+        }
+        if(this.speed <= -5){
+            this.speed = -5;
+        }
+       // context.clearRect(this.x, this.y, 10, 100);
        //console.log("y is " +this.y+ "this is speed"+ this.speed);
         if (this.y<0){
          //   console.log('wezzzzzz in move "if"')
             this.y=0;
         }
-        if(this.y>=canvas.height){
-            this.y=canvas.height;
+        if(this.y >= (canvas.height-100)){
+            this.y=(canvas.height-100);
         }
     }
     
@@ -40,6 +47,7 @@ function Paddle(x, y, height, width){
         context.fillStyle = 'yellow';
         context.fill();
         context.stroke();
+        
     }
 }
 
@@ -66,7 +74,7 @@ function Ball(x,y){
     this.render = function() {
     
         context.beginPath();
-            context.arc(x, y, 50, 0, 2* Math.PI);
+            context.arc(x, y, 25, 0, 2* Math.PI);
             context.strokeStyle = 'red';
             context.fillStyle = 'red';
             context.fill();
@@ -81,6 +89,7 @@ var inIt = function(){
 }
 
 function render() {
+     context.clearRect(0, 0, canvas.width, canvas.height);
     //console.log("in render to start");
     player.paddle.move();
      //console.log("player.paddle.move();");
@@ -89,7 +98,6 @@ function render() {
     computer.render();
      //console.log("computer.render();");
     player.render();
-    
 }
 
 var step = function(timestamp){
@@ -101,17 +109,18 @@ var onKeyPress = function(event){
     console.log("onKeyPress");
     var keycode = event.keyCode;
     if(keycode==38){         //38= uparrow
-        player.paddle.speed = -10;
+        player.paddle.speed += -10;
     }
     if(keycode==40){         //40= down arrow
-        player.paddle.speed = 10;
+        player.paddle.speed += 10;
     }
 }
 
 window.onload = function(){
     inIt();
     animate(step);
-    window.addEventListener("keypress", onKeyPress);//keypress=event onKeyPress=function
+    document.onkeydown = onKeyPress;
+    //window.addEventListener("keypress", onKeyPress);//keypress=event onKeyPress=function
 };
 
 //first we initilize values of paddels and balls with inIt 
