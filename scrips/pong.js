@@ -86,8 +86,8 @@ function Ball(x,y){
     this.goingUp = false;
     this.goingLeft = false;
     
-    this.speedX = 10;
-    this.speedY = 10;
+    this.speedX = 1;
+    this.speedY = 1;
 
     var velocityBall = function(){
         if(goingUp){
