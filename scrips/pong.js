@@ -38,6 +38,18 @@ function Paddle(x, y, height, width){
         }
     }
     
+    
+//    
+//    this.aI = function(){
+//        this.y = this.speed;
+//        
+//
+//
+//    }
+    
+    
+    
+    
     this.render = function() {
         context.beginPath();
         context.rect(this.x, this.y, this.width, this.height);
@@ -45,6 +57,10 @@ function Paddle(x, y, height, width){
         context.fill();
         context.stroke();
     }
+    
+    
+    
+    
 }
 
 function Player(x, y){
