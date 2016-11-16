@@ -1,7 +1,7 @@
 var canvas = document.getElementById('myCanvas');
 var context = canvas.getContext('2d');
 
-
+var should_step = false;
 
 var animate = window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
@@ -19,7 +19,7 @@ function Paddle(x, y, height, width){
     this.y = y;
     this.height= height;
     this.width = width;
-    this.speed=1;
+    this.speed=5;
     
     this.move = function(){  //tried passing in key code
         this.y+= this.speed;
@@ -29,8 +29,6 @@ function Paddle(x, y, height, width){
         if(this.speed <= -5){
             this.speed = -5;
         }
-       // context.clearRect(this.x, this.y, 10, 100);
-       //console.log("y is " +this.y+ "this is speed"+ this.speed);
         if (this.y<0){
          //   console.log('wezzzzzz in move "if"')
             this.y=0;
@@ -41,18 +39,16 @@ function Paddle(x, y, height, width){
     }
     
     this.render = function() {
-        console.log("y is " +this.y+ "this is speed"+ this.speed+ "this is x"+this.x);
-       context.beginPath();
-        context.rect(this.x, this.y, 10, 100);
+        context.beginPath();
+        context.rect(this.x, this.y, this.width, this.height);
         context.fillStyle = 'yellow';
         context.fill();
         context.stroke();
-        
     }
 }
 
 function Player(x, y){
-    this.paddle = new Paddle(x, y, 20, 5)
+    this.paddle = new Paddle(x, y, 100, 5)
         
     this.render = function() {
         this.paddle.render();
@@ -60,7 +56,7 @@ function Player(x, y){
 }
 
 function Computer(x, y){
-    this.paddle = new Paddle(x, y, 20, 5)  
+    this.paddle = new Paddle(x, y, 100, 5)  
         
     this.render = function() {
         this.paddle.render();
@@ -70,34 +66,103 @@ function Computer(x, y){
 function Ball(x,y){
     this.x = x;
     this.y = y;
-        
-    this.render = function() {
+    this.radius = 25;
+    this.goingUp = false;
+    this.goingLeft = false;
     
+    this.speedX = 10;
+    this.speedY = 10;
+
+    var velocityBall = function(){
+        if(goingUp){
+           this.y+=1
+           console.log("What up from velocityBall")
+        }
+    }
+    
+    
+    
+    this.move = function(){
+        // collision detection
+        // borders
+        if(this.y>=canvas.height - this.radius){//deals with the bottom border for some fucking reason
+           console.log("in first if statement")
+            this.goingUp = true;
+           // velocityBall();
+            //return
+        }
+        if(this.y<= this.radius){//deals with the top border for some fucking reason
+            console.log("in 2nd if statement")
+            this.goingUp = false;
+            //velocityBall();
+            //return
+        }
+        
+        // player paddle
+        if(
+            (this.y >= player.paddle.y) && 
+            (this.y <= (player.paddle.y + player.paddle.height)) &&
+            (this.x + this.radius >= player.paddle.x)) { //changing ball direction
+            this.goingLeft=true;
+        }
+        
+        // move ball
+        if (this.goingUp){
+            this.y += -this.speedY;
+        }else{
+            this.y += this.speedY;
+        }
+        
+        if (this.goingLeft){
+            this.x += -this.speedX;
+        }else{
+            this.x += this.speedX;
+        }
+
+
+    }
+    
+    this.render = function() {
         context.beginPath();
-            context.arc(x, y, 25, 0, 2* Math.PI);
+            context.arc(this.x, this.y, this.radius, 0, 2* Math.PI);
             context.strokeStyle = 'red';
             context.fillStyle = 'red';
             context.fill();
             context.closePath();
     }
+    
 }
 
 var inIt = function(){
-    ball = new Ball(350, 99);
+    ball = new Ball(canvas.width-70, canvas.height-120);
     computer = new Computer(10,100);
-    player = new Player(500,100);
+    player = new Player((canvas.width-20),canvas.height-50);
+}
+
+var midline = function(){
+    context.beginPath(); //midline
+    context.moveTo(300, 600);
+    context.lineTo(300, 0);
+    context.lineWidth = 1;
+    context.strokeStyle = '#ff0000';
+    context.stroke();
+
+
 }
 
 function render() {
-     context.clearRect(0, 0, canvas.width, canvas.height);
-    //console.log("in render to start");
-    player.paddle.move();
-     //console.log("player.paddle.move();");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    if (!should_step) {
+        player.paddle.move();
+        ball.move();
+    }
+    
     ball.render();
-     //console.log("ball.render();");
     computer.render();
-     //console.log("computer.render();");
     player.render();
+    
+    midline();
+
 }
 
 var step = function(timestamp){
@@ -106,14 +171,21 @@ var step = function(timestamp){
 }
 
 var onKeyPress = function(event){
-    console.log("onKeyPress");
     var keycode = event.keyCode;
     if(keycode==38){         //38= uparrow
-        player.paddle.speed += -10;
+        player.paddle.speed = -5;
     }
     if(keycode==40){         //40= down arrow
-        player.paddle.speed += 10;
+        player.paddle.speed = 5;
     }
+    if(keycode==32){ //32==space
+        // step move
+        if (should_step) {
+            player.paddle.move();    
+            ball.move();
+        }
+    } 
+        
 }
 
 window.onload = function(){
