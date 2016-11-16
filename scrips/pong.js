@@ -39,13 +39,19 @@ function Paddle(x, y, height, width){
     }
     
     
-//    
-//    this.aI = function(){
-//        this.y = this.speed;
-//        
-//
-//
-//    }
+    this.aI = function(bal){
+        if(computer.paddle.y >bal){
+            computer.paddle.y-=1;
+        }else if(computer.paddle.y <bal){
+             computer.paddle.y+=1;
+        }else{
+            
+        }
+        
+        
+
+
+    }
     
     
     
@@ -114,19 +120,28 @@ function Ball(x,y){
             //return
         }
         
-        // player paddle
+         player paddle
         if(
             (this.y >= player.paddle.y) && 
             (this.y <= (player.paddle.y + player.paddle.height)) &&
             (this.x + this.radius >= player.paddle.x)) { //changing ball direction
             this.goingLeft=true;
         }
+
+//        if(
+//            (this.y >= computer.paddle.y) && 
+//            (this.y <= (computer.paddle.y + computer.paddle.height)) &&
+//            (this.x + this.radius >= player.paddle.x)) { //changing ball direction
+//            this.goingLeft=false;
+//        }
         
         // move ball
         if (this.goingUp){
             this.y += -this.speedY;
+           // computer.paddle.aI(this.y);
         }else{
             this.y += this.speedY;
+            //computer.paddle.aI(this.y);
         }
         
         if (this.goingLeft){
