@@ -13,6 +13,7 @@ var animate = window.requestAnimationFrame ||
 var ball;
 var computer;
 var player;
+var bal;
 
 function Paddle(x, y, height, width){
     this.x = x;
@@ -39,12 +40,46 @@ function Paddle(x, y, height, width){
     }
     
     
+    
+    this.aI = function(roundThing){
+        if(this.y >roundThing){                
+            
+//            if(this.y<0){       trying to not make it bleed off screen
+//                this.y=0;
+//                console.log("SOOOooo")
+//            }
+            
+             //console.log("first if comp paddel = "+computer.paddle.y );
+            this.y-=1;
+        }else if(this.y <roundThing){
+            
+            
+//            trying to not make it bleed off screen
+//            if(this.y=canvas.height-100){
+//             this.y=(canvas.height-100);
+//            }
+            
+            
+            
+            this.y+=1;
+           // console.log("2nd if comp paddel = "+computer.paddle.y );
+            
+        }
+        
+    }
+    
 //    
-//    this.aI = function(){
-//        this.y = this.speed;
+//     this.aI = function(roundThing){
+//        if(computer.paddle.y >roundThing){
+//            if(computer.paddle.y)
+//             console.log("first if comp paddel = "+computer.paddle.y );
+//            computer.paddle.y-=1;
+//        }else if(computer.paddle.y <roundThing){
+//            computer.paddle.y+=1;
+//            console.log("2nd if comp paddel = "+computer.paddle.y );
+//            
+//        }
 //        
-//
-//
 //    }
     
     
@@ -82,12 +117,12 @@ function Computer(x, y){
 function Ball(x,y){
     this.x = x;
     this.y = y;
-    this.radius = 25;
+    this.radius = 15;
     this.goingUp = false;
     this.goingLeft = false;
     
-    this.speedX = 1;
-    this.speedY = 1;
+    this.speedX = 5;
+    this.speedY = 2;
 
     var velocityBall = function(){
         if(goingUp){
@@ -102,13 +137,13 @@ function Ball(x,y){
         // collision detection
         // borders
         if(this.y>=canvas.height - this.radius){//deals with the bottom border for some fucking reason
-           console.log("in first if statement")
+           //console.log("in first if statement")
             this.goingUp = true;
            // velocityBall();
             //return
         }
         if(this.y<= this.radius){//deals with the top border for some fucking reason
-            console.log("in 2nd if statement")
+           // console.log("in 2nd if statement")
             this.goingUp = false;
             //velocityBall();
             //return
@@ -120,13 +155,34 @@ function Ball(x,y){
             (this.y <= (player.paddle.y + player.paddle.height)) &&
             (this.x + this.radius >= player.paddle.x)) { //changing ball direction
             this.goingLeft=true;
+//                console.log("player.paddle.y="+player.paddle.y+ " & "+"player.paddle.y + player.paddle.height="+(player.paddle.y+player.paddle.height ));
+//                if  (this.y >= player.paddle.y) && 
+//                    (this.y <= (player.paddle.y + player.paddle.height)){
+//                        
+//                    }
+        }
+        
+         
+        if(
+            (this.y >= computer.paddle.y) && 
+            (this.y <= (computer.paddle.y + computer.paddle.height)) &&
+            (this.x - this.radius <= computer.paddle.x)) { //changing ball direction
+            this.goingLeft=false;
         }
         
         // move ball
         if (this.goingUp){
             this.y += -this.speedY;
+            bal = this.y-(computer.paddle.height/2);
+            //console.log("bal is" +bal+"first if ");
+            computer.paddle.aI(bal);
+            
+            
         }else{
             this.y += this.speedY;
+            bal = this.y-(computer.paddle.height/2);
+            //console.log("bal is" +bal+" 2nd if ");
+           computer.paddle.aI(bal);
         }
         
         if (this.goingLeft){
@@ -150,7 +206,7 @@ function Ball(x,y){
 }
 
 var inIt = function(){
-    ball = new Ball(canvas.width-70, canvas.height-120);
+    ball = new Ball(70, 120);
     computer = new Computer(10,100);
     player = new Player((canvas.width-20),canvas.height-50);
 }
@@ -184,6 +240,10 @@ function render() {
 var step = function(timestamp){
     render();
     animate(step);
+//    if(ball.x=0){
+//        alert("Human won the game");
+//    }
+
 }
 
 var onKeyPress = function(event){
@@ -199,6 +259,7 @@ var onKeyPress = function(event){
         if (should_step) {
             player.paddle.move();    
             ball.move();
+            computer.paddle.aI(bal);
         }
     } 
         
