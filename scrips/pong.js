@@ -117,13 +117,20 @@ function Computer(x, y){
 function Ball(x,y){
     this.x = x;
     this.y = y;
-    this.radius = 15;
+    this.radius = (1 + Math.floor(Math.random() * 20));
     this.goingUp = false;
     this.goingLeft = false;
     
-    this.speedX = 5;
-    this.speedY = 2;
-
+    this.speedX = (1 + Math.floor(Math.random() * 10));
+    this.speedY = (1 + Math.floor(Math.random() * 10));
+                //I should be able to eleminate some of these lines
+    
+    this.speedAndDirection = function(){
+        this.speedX = (1 + Math.floor(Math.random() * 10));
+        this.speedY = (1 + Math.floor(Math.random() * 10));
+    }
+        
+        
     var velocityBall = function(){
         if(goingUp){
            this.y+=1
@@ -155,6 +162,9 @@ function Ball(x,y){
             (this.y <= (player.paddle.y + player.paddle.height)) &&
             (this.x + this.radius >= player.paddle.x)) { //changing ball direction
             this.goingLeft=true;
+            this.speedAndDirection();
+
+// tried to make it hit funny at the ends
 //                console.log("player.paddle.y="+player.paddle.y+ " & "+"player.paddle.y + player.paddle.height="+(player.paddle.y+player.paddle.height ));
 //                if  (this.y >= player.paddle.y) && 
 //                    (this.y <= (player.paddle.y + player.paddle.height)){
@@ -162,12 +172,14 @@ function Ball(x,y){
 //                    }
         }
         
-         
+        
+        //Computer paddel
         if(
             (this.y >= computer.paddle.y) && 
             (this.y <= (computer.paddle.y + computer.paddle.height)) &&
             (this.x - this.radius <= computer.paddle.x)) { //changing ball direction
             this.goingLeft=false;
+            this.speedAndDirection();
         }
         
         // move ball
