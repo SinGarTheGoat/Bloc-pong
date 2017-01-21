@@ -4,19 +4,25 @@
         <link rel="stylesheet" type="text/css" href= "styles/pong.css">
     </head>
     <body> 
-        <h1>Welcome to Pong jerk.</h1>
-        <div>
-            <div>
-                <h1>computer score</h1>
-                <span id="computerScore">0</span>
+        <h1 class="upTop">Welcome to Pong.</h1>
+        
+        <div class = 'row'>
+            <div class = 'column' id = 'compSide'>    
+                <h1>computer score<br>
+                <span id="computerScore">0</span> 
+                </h1>
             </div>
             
-            <canvas id="myCanvas" width='600' height='400'>
-            </canvas>
+            <div class = 'column'>
+                <canvas id="myCanvas" width='600' height='400'>
+                </canvas>
+            </div>
             
-            <div>
-                 <h1>human score</h1>
-                 <span id="humanScore">0</span>
+            <div class = 'column' id = 'humanSide'> 
+                 <h1>
+                     human score<br>
+                     <span id="humanScore">0</span>
+                </h1>
             </div>
         </div>
 
@@ -25,3 +31,4 @@
     </body>
 
 </html>
+

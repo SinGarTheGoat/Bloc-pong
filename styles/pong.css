@@ -7,6 +7,28 @@
     
 }
 
-h1{
+
+.upTop{
     text-align: center;
+}
+
+.row{
+    display:table;
+    
+
+}
+.column{
+    display: table-cell;
+
+}
+
+#compSide{
+  vertical-align: top;
+    padding-right: 50px;
+    padding-left: 25px;
+}
+
+#humanSide{
+    vertical-align: top;
+    padding-left: 50px;
 }
